@@ -151,6 +151,7 @@ struct vprocessor::CPU {
 		}
 	}
 
+	//* Writes an 16 bit value to 2 memory addresses (One for the low byte, another for the high byte)
 	void WriteWord(uint16_t operand, uint32_t& cycles, uint16_t address, Memory& memory) {
 		memory[address] = operand & 0xFF;
 		memory[address++] = (operand >> 8);

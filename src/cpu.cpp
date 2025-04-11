@@ -3,8 +3,8 @@
 #include "cpu.h"
 #include "base_converter.h"
 
+// Here be dragons
 uint32_t vprocessor::CPU::Execute(uint32_t cycles, vprocessor::Memory& memory) {
-
 	auto ADD = [&cycles, &memory, this] (uint8_t operand) {
 		uint16_t sum = A;
 		bool signbitcheck = !((A ^ operand) & 0x80);
@@ -19,10 +19,11 @@ uint32_t vprocessor::CPU::Execute(uint32_t cycles, vprocessor::Memory& memory) {
 	
 	uint32_t cyclesRequested = cycles;
 
+	// Actual instruction declarations
 	while (cycles > 0) {
 		uint8_t Ins = FetchByte(cycles, memory);
 		switch (Ins) {
-			
+
 			case NOOP: {
 				cycles--;
 				std::cout << "[INFO/CPU_Emulator] NOOP instruction successfully executed\n";
