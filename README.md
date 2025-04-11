@@ -3,4 +3,4 @@ A virtual microprocessor based off the MOS 6502 microprocessor
 
 ## Compiling 
 
-See BUILD.md for build instructions
+See [BUILD.md](./BUILD.md) for build instructions
