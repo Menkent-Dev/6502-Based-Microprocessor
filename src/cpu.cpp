@@ -3,6 +3,10 @@
 #include "cpu.h"
 #include "base_converter.h"
 
+namespace vprocessor {
+	bool isProcessorDebug = false;
+}
+
 // Here be dragons
 uint32_t vprocessor::CPU::Execute(uint32_t cycles, vprocessor::Memory& memory) {
 	auto ADD = [&cycles, &memory, this] (uint8_t operand) {
