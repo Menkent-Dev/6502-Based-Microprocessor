@@ -4,8 +4,7 @@
 #include "base_converter.h"
 
 namespace vprocessor {
-	bool isProcessorDebug = false;
-
+	extern bool isProcessorDebug;
 	struct Memory;
 	struct CPU;
 }
