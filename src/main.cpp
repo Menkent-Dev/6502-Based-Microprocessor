@@ -6,33 +6,33 @@
 int main() {
 	std::cout << "[INFO/Init] Starting!\n";
 	int cycles = 12;
-	vprocessor::Memory CPU_MEM;
-	vprocessor::CPU MicroCPU;
+	vprocessor::Memory memory;
+	vprocessor::CPU processor;
 
-	MicroCPU.Reset(CPU_MEM);
+	processor.Reset(memory);
 	std::cout << "[INFO/Init] All modules are initialized\n";
 
-	CPU_MEM[0x0001] = 0x28;
+	memory[0x0001] = 0x28;
 
-	CPU_MEM[0x8000] = MicroCPU.NOOP;
-	CPU_MEM[0x8001] = MicroCPU.LODA;
-	CPU_MEM[0x8002] = 0x01;
-	CPU_MEM[0x8003] = 0x00;
-	CPU_MEM[0x8004] = MicroCPU.INCR;
+	memory[0x8000] = processor.NOOP;
+	memory[0x8001] = processor.LODA;
+	memory[0x8002] = 0x01;
+	memory[0x8003] = 0x00;
+	memory[0x8004] = processor.INCR;
 
 	std::cout << "[INFO/Main] Executing program\n";
-	const int mainThread = MicroCPU.Execute(cycles, CPU_MEM);
+	const int mainThread = processor.Execute(cycles, memory);
 
-	uint16_t programCounter = MicroCPU.PC;
-	uint16_t stackPointer = MicroCPU.SP;
-	uint16_t Carry = MicroCPU.C;
-	uint16_t Overflow = MicroCPU.V;
-	uint16_t Negative = MicroCPU.N;
-	uint16_t Zero = MicroCPU.Z;
+	uint16_t programCounter = processor.PC;
+	uint16_t stackPointer = processor.SP;
+	uint16_t Carry = processor.C;
+	uint16_t Overflow = processor.V;
+	uint16_t Negative = processor.N;
+	uint16_t Zero = processor.Z;
 
-	uint16_t Index_X = MicroCPU.X;
-	uint16_t Index_Y = MicroCPU.Y;
-	uint16_t Accumulator = MicroCPU.A;
+	uint16_t Index_X = processor.X;
+	uint16_t Index_Y = processor.Y;
+	uint16_t Accumulator = processor.A;
 
 	std::cout << "[INFO/Main] Program exited. Took " << cycles << " cycles to finish with " << mainThread << " cycles used\n";
 
