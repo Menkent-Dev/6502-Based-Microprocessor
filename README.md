@@ -8,4 +8,4 @@ See [BUILD.md](./BUILD.md) for build instructions
 ## TODO List
 
 * Add more instructions
-* other sutff that is related
+* other stuff that is NOT nonsense and related
