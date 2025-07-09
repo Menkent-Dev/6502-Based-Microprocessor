@@ -50,7 +50,7 @@ void vprocessor::Processor::Execute(int32_t cycles, vprocessor::Memory& memory) 
 					std::cout << "[DEBUG/Processor_Emulator] Program counter now on address \"" << decToHex(PC) << "\"\n";
 					std::cout << "[DEBUG/Processor_Emulator] Address register reset\n";
 				}
-			}
+			} break;
 
 			// Arithmetic & Logic
 
@@ -131,7 +131,7 @@ void vprocessor::Processor::Execute(int32_t cycles, vprocessor::Memory& memory) 
 				if (isProcessorDebug == true) {
 					std::cout << "[DEBUG/Processor_Emulator] Stored value from accumulator \"" << A << "\" to memory address \"Ox" << decToHex(address) << "\"\n";
 				}
-			}
+			} break;
 
 			case STRX: {
 				uint16_t address = FetchWord(cycles, memory);
@@ -140,7 +140,7 @@ void vprocessor::Processor::Execute(int32_t cycles, vprocessor::Memory& memory) 
 				if (isProcessorDebug == true) {
 					std::cout << "[DEBUG/Processor_Emulator] Stored value from index register X \"" << X << "\" to memory address \"Ox" << decToHex(address) << "\"\n";
 				}
-			}
+			} break;
 
 			case STRY: {
 				uint16_t address = FetchWord(cycles, memory);
@@ -149,7 +149,7 @@ void vprocessor::Processor::Execute(int32_t cycles, vprocessor::Memory& memory) 
 				if (isProcessorDebug == true) {
 					std::cout << "[DEBUG/Processor_Emulator] Stored value from index register Y \"" << Y << "\" to memory address \"Ox" << decToHex(address) << "\"\n";
 				}
-			}
+			} break;
 
 			case CPAX: {
 				X = A;
@@ -197,13 +197,13 @@ void vprocessor::Processor::Execute(int32_t cycles, vprocessor::Memory& memory) 
 				uint16_t address = FetchWord(cycles, memory);
 				WriteWord(AR, cycles, address, memory);
 				std::cout << "[INFO/Processor_Emulator] STAD instruction successfully executed\n";
-			}
+			} break;
 
 			case LOAD: {
 				uint16_t address = FetchWord(cycles, memory);
 				AR = address;
 				std::cout << "[INFO/Processor_Emulator] LOAD instruction successfully executed\n";
-			}
+			} break;
 
 			// Only if the instruction doesn't exist will this trigger.
 			default: {

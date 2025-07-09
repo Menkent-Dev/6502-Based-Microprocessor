@@ -108,6 +108,9 @@ struct vprocessor::Processor {
 		uint8_t Data = memory[PC];
 		PC++;
 		cycles--;
+		if (isProcessorDebug == true) {
+			std::cout << "[DEBUG/Processor_Emulator] Read value from addresess \"0x" << decToHex(PC--) << "\"\n";
+		}
 		return Data;
 	}
 
@@ -118,6 +121,9 @@ struct vprocessor::Processor {
 		Data |= (memory[PC] << 8 );
 		PC++;
 		cycles -= 2;
+		if (isProcessorDebug == true) {
+			std::cout << "[DEBUG/Processor_Emulator] Fetched value from addresess \"0x" << decToHex(PC - 2) << " - 0x" << decToHex(PC--) << "\"\n";
+		}
 		return Data;
 	}
 
@@ -125,20 +131,20 @@ struct vprocessor::Processor {
 	uint8_t ReadByte(int32_t& cycles, uint16_t address, const Memory& memory) {
 		uint8_t data = memory[address];
 		cycles--;
-		return data;
 		if (isProcessorDebug == true) {
 			std::cout << "[DEBUG/Processor_Emulator] Read value from addresess \"0x" << decToHex(address) << "\"\n";
 		}
+		return data;
 	}
 
 	//* Reads the 16 bit data currently stored in the memory
 	uint16_t ReadWord(int32_t& cycles, uint16_t address, const Memory& memory) {
 		uint8_t Low = ReadByte(cycles, address, memory);
 		uint8_t High = ReadByte(cycles, address + 1, memory);
-		return Low | (High << 8);
 		if (isProcessorDebug == true) {
 			std::cout << "[DEBUG/Processor_Emulator] Read value from addresess \"0x" << decToHex(address) << " - 0x" << decToHex(address++) << "\"\n";
 		}
+		return Low | (High << 8);
 	}
 
 	//* Writes an 8 bit value to memory
