@@ -51,8 +51,8 @@ int hexToDec(std::string number) {
             return -1;
         }
 
-        decimal += value * pos; // Multiply value by 16^(pos)
-        pos *= 16; // Increase power of 16
+        decimal += value * pos;
+        pos *= 16;
     }
 
     return decimal;
@@ -68,9 +68,9 @@ std::string decToHex(int number) {
     char hexDigits[] = "0123456789ABCDEF";
 
     while (number > 0) {
-        int remainder = number % 16; // Get remainder when divided by 16
+        int remainder = number % 16;
         hex = hexDigits[remainder] + hex; // Prepend corresponding hex character
-        number /= 16; // Reduce the number by dividing by 16
+        number /= 16;
     }
 
     return hex;

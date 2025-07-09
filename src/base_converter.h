@@ -1,17 +1,26 @@
-#ifndef BASE_CONVERTER_H
-#define BASE_CONVERTER_H
+#pragma once
 #include <iostream>
 
-//* Converts binary numbers to decimal
+/**
+ * @brief Converts binary numbers to decimal
+ * @param number Base-2 number to convert it to base-10
+ */
 int binToDec(std::string number);
 
-//* Converts decimal numbers to binary
+/**
+ * @brief Converts decimal numbers to binary
+ * @param number Base-16 number to convert it to base-2
+ */
 std::string decToBin(int number);
 
-//* Converts hexadecimal numbers to decimal
+/**
+ * @brief Converts hexadecimal numbers to decimal
+ * @param number Base-16 number to convert it to base-10
+ */
 int hexToDec(std::string number);
 
-//* Converts decimal numbers to hexadecimal
+/**
+ * @brief Converts decimal numbers to hexadecimal
+ * @param number Base-16 number to convert it to base-2
+ */
 std::string decToHex(int number);
-
-#endif
