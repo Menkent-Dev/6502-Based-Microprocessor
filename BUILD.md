@@ -5,12 +5,12 @@
 3. Compile:
    * For the individual cpp files:
    ```bash
-   g++ -c src/cpu.cpp 
-   g++ -c src/base_converter.cpp
+   g++ -c src/core.cpp -o build/object/core.o
+   g++ -c src/base_converter.cpp -o build/object/base_converter.o
    ```
    * For the main program itself:
    ```bash
-   g++ src/main.cpp cpu.o base_converter.o -o build/virtual_microprocessor.exe
+   g++ src/main.cpp build/object/core.o build/object/base_converter.o -o build/virtual_microprocessor.exe
    ```
    
 > [!NOTE]
