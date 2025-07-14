@@ -26,7 +26,7 @@
         },
         {
             "type": "cppbuild",
-            "label": "Compile core object file",
+            "label": "Link core object file",
             "command": "C:/msys64/ucrt64/bin/g++.exe",
             "args": [
                 "-c",
@@ -46,7 +46,7 @@
         },
         {
             "type": "cppbuild",
-            "label": "Compile base converter object file",
+            "label": "Link base converter object file",
             "command": "C:/msys64/ucrt64/bin/g++.exe",
             "args": [
                 "-c",
