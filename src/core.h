@@ -1,7 +1,11 @@
 #pragma once
 #include <iostream>
 #include <cstdint>
-#include "base_converter.h"
+
+extern int binToDec(std::string number);
+extern std::string decToBin(int number);
+extern int hexToDec(std::string number);
+extern std::string decToHex(int number);
 
 namespace vprocessor {
 	extern bool isProcessorDebug;
@@ -12,7 +16,7 @@ namespace vprocessor {
 struct vprocessor::Memory {
 
 	static constexpr uint32_t MAX_MEMORY = 65535;
-	uint8_t Data[MAX_MEMORY];
+	uint8_t data[MAX_MEMORY];
 
 	//* Initializes the Memory
 	void Initialize() {
@@ -22,7 +26,7 @@ struct vprocessor::Memory {
 
 		for (uint32_t i = 0; i < MAX_MEMORY; i++)
 		{
-			Data[i] = 0;
+			data[i] = 0;
 		}
 
 		if (isProcessorDebug == true) {
@@ -31,13 +35,13 @@ struct vprocessor::Memory {
 	}
 
 	//* Reads a byte
-	uint8_t operator[](uint32_t Address) const {
-		return Data[Address];
+	uint8_t operator[](uint32_t address) const {
+		return data[address];
 	}
 
 	//* Writes a byte
-	uint8_t& operator[](uint32_t Address){
-		return Data[Address];
+	uint8_t& operator[](uint32_t address){
+		return data[address];
 	}
 };
 
@@ -88,7 +92,7 @@ struct vprocessor::Processor {
 	// Microprocessor Functions
 
 	//* Resets the microprocessor
-	void Reset(Memory& memory) {
+	void reset(Memory& memory) {
 		if (isProcessorDebug == true) {
 			std::cout << "[DEBUG/Processor_Emulator] Initializing emulated processor\n";
 		}
@@ -104,7 +108,7 @@ struct vprocessor::Processor {
 	}
 
 	//* Fetches the 8 bit data currently stored in the memory
-	uint8_t FetchByte(int32_t& cycles, const Memory& memory) {
+	uint8_t fetchByte(int32_t& cycles, const Memory& memory) {
 		uint8_t Data = memory[PC];
 		PC++;
 		cycles--;
@@ -115,7 +119,7 @@ struct vprocessor::Processor {
 	}
 
 	//* Fetches the 16 bit data currently stored in the memory
-	uint16_t FetchWord(int32_t& cycles, const Memory& memory) {
+	uint16_t fetchWord(int32_t& cycles, const Memory& memory) {
 		uint16_t Data = memory[PC];
 		PC++;
 		Data |= (memory[PC] << 8 );
@@ -128,7 +132,7 @@ struct vprocessor::Processor {
 	}
 
 	//* Reads the 8 bit data currently stored in the memory
-	uint8_t ReadByte(int32_t& cycles, uint16_t address, const Memory& memory) {
+	uint8_t readByte(int32_t& cycles, uint16_t address, const Memory& memory) {
 		uint8_t data = memory[address];
 		cycles--;
 		if (isProcessorDebug == true) {
@@ -138,9 +142,9 @@ struct vprocessor::Processor {
 	}
 
 	//* Reads the 16 bit data currently stored in the memory
-	uint16_t ReadWord(int32_t& cycles, uint16_t address, const Memory& memory) {
-		uint8_t Low = ReadByte(cycles, address, memory);
-		uint8_t High = ReadByte(cycles, address + 1, memory);
+	uint16_t readWord(int32_t& cycles, uint16_t address, const Memory& memory) {
+		uint8_t Low = readByte(cycles, address, memory);
+		uint8_t High = readByte(cycles, address + 1, memory);
 		if (isProcessorDebug == true) {
 			std::cout << "[DEBUG/Processor_Emulator] Read value from addresess \"0x" << decToHex(address) << " - 0x" << decToHex(address++) << "\"\n";
 		}
@@ -148,7 +152,7 @@ struct vprocessor::Processor {
 	}
 
 	//* Writes an 8 bit value to memory
-	void WriteByte(uint8_t operand, int32_t& cycles, uint16_t address, Memory& memory) {
+	void writeByte(uint8_t operand, int32_t& cycles, uint16_t address, Memory& memory) {
 		memory[address] = operand;
 		cycles--;
 		if (isProcessorDebug == true) {
@@ -157,7 +161,7 @@ struct vprocessor::Processor {
 	}
 
 	//* Writes an 16 bit value to 2 memory addresses (One for the low byte, another for the high byte)
-	void WriteWord(uint16_t operand, int32_t& cycles, uint16_t address, Memory& memory) {
+	void writeWord(uint16_t operand, int32_t& cycles, uint16_t address, Memory& memory) {
 		memory[address] = operand & 0xFF;
 		memory[address++] = (operand >> 8);
 		cycles -= 2;
@@ -167,11 +171,11 @@ struct vprocessor::Processor {
 	}
 
 	//* Executes the data currently fetched
-	void Execute(int32_t cycles, Memory& memory);
+	void execute(int32_t cycles, Memory& memory);
 
 	//* Sets the appropriate flags after instruction is executed
-	void SetZNFlags(uint8_t Register) {
-		Z = (Register == 0x0);
-		N = (Register & 0x80) > 0;
+	void setZNFlags(uint8_t flagRegister) {
+		Z = (flagRegister == 0x0);
+		N = (flagRegister & 0x80) > 0;
 	}
 };

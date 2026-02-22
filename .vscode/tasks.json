@@ -2,16 +2,13 @@
     "tasks": [
         {
             "type": "cppbuild",
-            "label": "Build and compile main and object files",
+            "label": "Build and compile program",
             "command": "C:/msys64/ucrt64/bin/g++.exe",
             "args": [
                 "-fdiagnostics-color=always",
-                "-g",
-                "${workspaceFolder}\\src\\main.cpp",
-                "${workspaceFolder}\\build\\object\\core.o",
-                "${workspaceFolder}\\build\\object\\base_converter.o",
+                "${workspaceFolder}/src/*",
                 "-o",
-                "${workspaceFolder}\\build\\virtual_microprocessor.exe"
+                "${workspaceFolder}/build/virtual_microprocessor.exe"
             ],
             "options": {
                 "cwd": "C:/msys64/ucrt64/bin"
@@ -26,13 +23,10 @@
         },
         {
             "type": "cppbuild",
-            "label": "Link core object file",
-            "command": "C:/msys64/ucrt64/bin/g++.exe",
+            "label": "Build and debug program",
+            "command": "C:/msys64/ucrt64/bin/gdb.exe",
             "args": [
-                "-c",
-                "${workspaceFolder}\\src\\core.cpp",
-                "-o",
-                "${workspaceFolder}\\build\\object\\core.o"
+                "${workspaceFolder}/src/*"
             ],
             "options": {
                 "cwd": "C:/msys64/ucrt64/bin"
@@ -41,27 +35,8 @@
                 "$gcc"
             ],
             "group": {
-                "kind": "build"
-            }
-        },
-        {
-            "type": "cppbuild",
-            "label": "Link base converter object file",
-            "command": "C:/msys64/ucrt64/bin/g++.exe",
-            "args": [
-                "-c",
-                "${workspaceFolder}\\src\\base_converter.cpp",
-                "-o",
-                "${workspaceFolder}\\build\\object\\base_converter.o"
-            ],
-            "options": {
-                "cwd": "C:/msys64/ucrt64/bin"
-            },
-            "problemMatcher": [
-                "$gcc"
-            ],
-            "group": {
-                "kind": "build"
+                "kind": "build",
+                "isDefault": true
             }
         }
     ],

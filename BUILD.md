@@ -14,14 +14,9 @@ Before compiling (as with any other cpp programs):
 ## 2. Manual (For those who use other IDEs or primarily use terminals)
 1. Open any terminal or IDE of your choice.
 2. Compile:
-   * For the individual cpp files:
-   ```bash
-   g++ -c src/core.cpp -o build/object/core.o
-   g++ -c src/base_converter.cpp -o build/object/base_converter.o
-   ```
    * For the main program itself:
    ```bash
-   g++ src/main.cpp build/object/core.o build/object/base_converter.o -o build/virtual_microprocessor.exe
+   g++ src/*.cpp src/*.h -o build/virtual_microprocessor.exe*
    ```
 
 

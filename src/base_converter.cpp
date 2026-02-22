@@ -1,5 +1,3 @@
-#include <iostream>
-#include <cstdint>
 #include <bits/stdc++.h>
 
 int binToDec(std::string number) {
@@ -18,11 +16,10 @@ int binToDec(std::string number) {
 }
 
 std::string decToBin(int number) {
-	// Edge cases
+	// Edgy cases
     if (number == 0) {
 		return "0";
 	} else if (number < 0) {
-	std::cerr << "[ERROR/Base_Converter] Input lesser than 0" << std::endl;	// This function doesn't like negative numbers ig
 		return "-1";
 	}
 
@@ -47,7 +44,6 @@ int hexToDec(std::string number) {
         } else if (digit >= 'a' && digit <= 'f') {
             value = digit - 'a' + 10;
         } else {
-            std::cerr << "[ERROR/Base_Converter] Invalid input (Not a Base-16 Number)" << std::endl; // Throws an error if not a valid hex number
             return -1;
         }
 

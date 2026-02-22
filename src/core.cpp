@@ -4,11 +4,11 @@
 #include "base_converter.h"
 
 namespace vprocessor {
-	bool isProcessorDebug = false;
+	bool isProcessorDebug = true;
 }
 
 // Here be dragons
-void vprocessor::Processor::Execute(int32_t cycles, vprocessor::Memory& memory) {
+void vprocessor::Processor::execute(int32_t cycles, vprocessor::Memory& memory) {
 	auto ADD = [&cycles, &memory, this] (uint8_t operand) {
 		uint16_t sum = A;
 		bool signbitcheck = !((A ^ operand) & 0x80);
@@ -16,7 +16,7 @@ void vprocessor::Processor::Execute(int32_t cycles, vprocessor::Memory& memory) 
 		sum += operand;
 		sum += C;
 		A = (sum & 0xFF);
-		SetZNFlags(A);
+		setZNFlags(A);
 		C = sum > 0xFF;
 		V = signbitcheck && ((A ^ operand) & 0x80);
 	};
@@ -24,16 +24,15 @@ void vprocessor::Processor::Execute(int32_t cycles, vprocessor::Memory& memory) 
 	// Actual instruction declarations
 
 	while (cycles > 0) {
-		uint8_t Ins = FetchByte(cycles, memory);
+		uint8_t Ins = fetchByte(cycles, memory);
 		switch (Ins) {
-
 			case NOOP: {
 				cycles--;
 				std::cout << "[INFO/Processor_Emulator] NOOP instruction successfully executed\n";
 			} break;
 
 			case JUMP: {
-				uint16_t address = FetchWord(cycles, memory);
+				uint16_t address = fetchWord(cycles, memory);
 				PC = address;
 				std::cout << "[INFO/Processor_Emulator] JUMP instruction successfully executed\n";
 				if (isProcessorDebug == true) {
@@ -55,8 +54,8 @@ void vprocessor::Processor::Execute(int32_t cycles, vprocessor::Memory& memory) 
 			// Arithmetic & Logic
 
 			case ADDC: {
-				uint16_t address = FetchWord(cycles, memory);
-				uint8_t operand = ReadByte(cycles, address, memory);
+				uint16_t address = fetchWord(cycles, memory);
+				uint8_t operand = readByte(cycles, address, memory);
 				ADD(operand);
 				std::cout << "[INFO/Processor_Emulator] ADDC instruction successfully executed\n";
 				if (isProcessorDebug == true) {
@@ -65,8 +64,8 @@ void vprocessor::Processor::Execute(int32_t cycles, vprocessor::Memory& memory) 
 			} break;
 
 			case SUBC: {
-				uint16_t address = FetchWord(cycles, memory);
-				uint8_t operand = ReadByte(cycles, address, memory);
+				uint16_t address = fetchWord(cycles, memory);
+				uint8_t operand = readByte(cycles, address, memory);
 				ADD(~operand);
 				std::cout << "[INFO/Processor_Emulator] SUBC instruction successfully executed\n";
 				if (isProcessorDebug == true) {
@@ -75,29 +74,29 @@ void vprocessor::Processor::Execute(int32_t cycles, vprocessor::Memory& memory) 
 			} break;
 
 			case INCR: {
-				uint16_t address = FetchWord(cycles, memory);
-				uint8_t operand = ReadByte(cycles, address, memory);
+				uint16_t address = fetchWord(cycles, memory);
+				uint8_t operand = readByte(cycles, address, memory);
 				operand++;
 				cycles--;
-				WriteByte(operand, cycles, address, memory);
+				writeByte(operand, cycles, address, memory);
 				std::cout << "[INFO/Processor_Emulator] INCR instruction successfully executed\n";
 			} break;
 
 			case DECR: {
-				uint16_t address = FetchWord(cycles, memory);
-				uint8_t operand = ReadByte(cycles, address, memory);
+				uint16_t address = fetchWord(cycles, memory);
+				uint8_t operand = readByte(cycles, address, memory);
 				operand--;
 				cycles--;
-				WriteByte(operand, cycles, address, memory);
+				writeByte(operand, cycles, address, memory);
 				std::cout << "[INFO/Processor_Emulator] DECR instruction successfully executed\n";
 			} break;
 
 			// Register Manipulaton
 
 			case LODA: {
-				uint16_t address = FetchWord(cycles, memory);
-				A = ReadByte(cycles, address, memory);
-				SetZNFlags(A);
+				uint16_t address = fetchWord(cycles, memory);
+				A = readByte(cycles, address, memory);
+				setZNFlags(A);
 				std::cout << "[INFO/Processor_Emulator] LODA instruction successfully executed\n";
 				if (isProcessorDebug == true) {
 					std::cout << "[DEBUG/Processor_Emulator] Loaded value from memory address \"Ox" << decToHex(address) << "\" to accumulator (now \"" << A << "\")\n";
@@ -105,9 +104,9 @@ void vprocessor::Processor::Execute(int32_t cycles, vprocessor::Memory& memory) 
 			} break;
 
 			case LODX: {
-				uint16_t address = FetchWord(cycles, memory);
-				X = ReadByte(cycles, address, memory);
-				SetZNFlags(X);
+				uint16_t address = fetchWord(cycles, memory);
+				X = readByte(cycles, address, memory);
+				setZNFlags(X);
 				std::cout << "[INFO/Processor_Emulator] LODX instruction successfully executed\n";
 				if (isProcessorDebug == true) {
 					std::cout << "[DEBUG/Processor_Emulator] Loaded value from memory address \"Ox" << decToHex(address) << "\" to index register X (now \"" << X << "\")\n";
@@ -115,9 +114,9 @@ void vprocessor::Processor::Execute(int32_t cycles, vprocessor::Memory& memory) 
 			} break;
 
 			case LODY: {
-				uint16_t address = FetchWord(cycles, memory);
-				Y = ReadByte(cycles, address, memory);
-				SetZNFlags(Y);
+				uint16_t address = fetchWord(cycles, memory);
+				Y = readByte(cycles, address, memory);
+				setZNFlags(Y);
 				std::cout << "[INFO/Processor_Emulator] LODY instruction successfully executed\n";
 				if (isProcessorDebug == true) {
 					std::cout << "[DEBUG/Processor_Emulator] Loaded value from memory address \"Ox" << decToHex(address) << "\" to index register Y (now \"" << Y << "\")\n";
@@ -125,8 +124,8 @@ void vprocessor::Processor::Execute(int32_t cycles, vprocessor::Memory& memory) 
 			} break;
 
 			case STRA: {
-				uint16_t address = FetchWord(cycles, memory);
-				WriteByte(A, cycles, address, memory);
+				uint16_t address = fetchWord(cycles, memory);
+				writeByte(A, cycles, address, memory);
 				std::cout << "[INFO/Processor_Emulator] STRA instruction successfully executed\n";
 				if (isProcessorDebug == true) {
 					std::cout << "[DEBUG/Processor_Emulator] Stored value from accumulator \"" << A << "\" to memory address \"Ox" << decToHex(address) << "\"\n";
@@ -134,8 +133,8 @@ void vprocessor::Processor::Execute(int32_t cycles, vprocessor::Memory& memory) 
 			} break;
 
 			case STRX: {
-				uint16_t address = FetchWord(cycles, memory);
-				WriteByte(X, cycles, address, memory);
+				uint16_t address = fetchWord(cycles, memory);
+				writeByte(X, cycles, address, memory);
 				std::cout << "[INFO/Processor_Emulator] STRX instruction successfully executed\n";
 				if (isProcessorDebug == true) {
 					std::cout << "[DEBUG/Processor_Emulator] Stored value from index register X \"" << X << "\" to memory address \"Ox" << decToHex(address) << "\"\n";
@@ -143,8 +142,8 @@ void vprocessor::Processor::Execute(int32_t cycles, vprocessor::Memory& memory) 
 			} break;
 
 			case STRY: {
-				uint16_t address = FetchWord(cycles, memory);
-				WriteByte(Y, cycles, address, memory);
+				uint16_t address = fetchWord(cycles, memory);
+				writeByte(Y, cycles, address, memory);
 				std::cout << "[INFO/Processor_Emulator] STRY instruction successfully executed\n";
 				if (isProcessorDebug == true) {
 					std::cout << "[DEBUG/Processor_Emulator] Stored value from index register Y \"" << Y << "\" to memory address \"Ox" << decToHex(address) << "\"\n";
@@ -194,13 +193,13 @@ void vprocessor::Processor::Execute(int32_t cycles, vprocessor::Memory& memory) 
 			} break;
 
 			case STAD: {
-				uint16_t address = FetchWord(cycles, memory);
-				WriteWord(AR, cycles, address, memory);
+				uint16_t address = fetchWord(cycles, memory);
+				writeWord(AR, cycles, address, memory);
 				std::cout << "[INFO/Processor_Emulator] STAD instruction successfully executed\n";
 			} break;
 
 			case LOAD: {
-				uint16_t address = FetchWord(cycles, memory);
+				uint16_t address = fetchWord(cycles, memory);
 				AR = address;
 				std::cout << "[INFO/Processor_Emulator] LOAD instruction successfully executed\n";
 			} break;
